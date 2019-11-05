@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import org.springframework.web.util.UriComponents;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -22,6 +21,7 @@ public class UserAPI {
         if (u == null) {
             throw new UserNotFoundException("id-" + id);
         }
+
         return u;
     }
 
