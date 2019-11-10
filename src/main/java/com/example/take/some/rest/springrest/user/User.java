@@ -1,26 +1,30 @@
 package com.example.take.some.rest.springrest.user;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.Past;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
-@ApiModel(description = "A description for the user")
+@Entity
 public class User {
-    private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM-dd-yyyy");
-    private int id;
+
+    @Id
+    @GeneratedValue
+    private Integer id;
 
     @Size(min=5, max = 100, message = "Name must be between 5 and 100 characters.")
-    @Pattern(regexp = "[a-z][A-Z]", message = "Name must only contain alphanumeric characters.")
     private String name;
 
     @Past
-    @ApiModelProperty(notes="Birth date cannot be in the past")
     private LocalDate birthDate;
+
+    @OneToMany(mappedBy = "user")
+    private List<Post> posts;
 
     private User() { }
 
@@ -30,11 +34,11 @@ public class User {
         this.birthDate = birthDate;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -51,7 +55,16 @@ public class User {
     }
 
     public void setBirthDate(String birthDate) {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM-dd-yyyy");
         this.birthDate = LocalDate.from(dtf.parse(birthDate));
+    }
+
+    public List<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
     }
 
     @Override
